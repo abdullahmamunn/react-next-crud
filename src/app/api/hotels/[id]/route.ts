@@ -49,11 +49,12 @@ export async function PUT(request: Request, { params }: { params: Promise<{id: s
   }
 }
 // Delete a hotel
-export async function DELETE(req: Request, context: { params: { id: string } }) {
-  const params = await context.params; 
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const {id} = await params; 
   await prisma.hotel.delete({
-    where: { id: Number(params.id) },
+    where: { id: Number(id) },
   });
 
   return NextResponse.json({ message: "Hotel deleted successfully" }, { status: 200 });
 }
+
