@@ -28,18 +28,18 @@ export async function GET(request: Request,
 }
 
 // Update hotel details
-export async function PUT(req: Request, context: { params: { id: string } }) {
-  const params = await context.params;
+export async function PUT(request: Request, { params }: { params: Promise<{id: string }> }) {
+  const {id} = await params;
 
-  if (!params || !params.id) {
+  if (!params || !id) {
     return NextResponse.json({ error: "Hotel ID is required" }, { status: 400 });
   }
 
   try {
-    const { name, address, costPerNight, availableRooms, imageUrl, rating } = await req.json();
+    const { name, address, costPerNight, availableRooms, imageUrl, rating } = await request.json();
 
     const updatedHotel = await prisma.hotel.update({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
       data: { name, address, costPerNight, availableRooms, imageUrl, rating },
     });
 
@@ -48,7 +48,6 @@ export async function PUT(req: Request, context: { params: { id: string } }) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
 // Delete a hotel
 export async function DELETE(req: Request, context: { params: { id: string } }) {
   const params = await context.params; 
