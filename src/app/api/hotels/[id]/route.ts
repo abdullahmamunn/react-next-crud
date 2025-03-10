@@ -1,22 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
+// Get a single hotel
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const { id } = params;
+
+  if (!id) {
+    return NextResponse.json({ error: "Hotel ID is required" }, { status: 400 });
+  }
+
   try {
     const hotel = await prisma.hotel.findUnique({
-      where: { id: Number(context.params.id) }, // Ensure ID is converted to a number if needed
+      where: { id: Number(id) },
     });
 
     if (!hotel) {
-      return NextResponse.json({ error: 'Hotel not found' }, { status: 404 });
+      return NextResponse.json({ error: "Hotel not found" }, { status: 404 });
     }
 
     return NextResponse.json(hotel, { status: 200 });
   } catch (error) {
-    console.error('Error fetching hotel:', error);
-    return NextResponse.json({ error: 'Failed to fetch hotel' }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
