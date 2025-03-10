@@ -4,8 +4,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Get a single hotel
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(request: Request,
+   { params }: { params: Promise < { id: string }> }) {
+     const { id } = await params;
 
   if (!id) {
     return NextResponse.json({ error: "Hotel ID is required" }, { status: 400 });
