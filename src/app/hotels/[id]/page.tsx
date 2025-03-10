@@ -3,7 +3,8 @@ import Image from "next/image";
 import { FaFacebook, FaTwitter, FaWhatsapp } from 'react-icons/fa';
 
 const HotelDetailsPage = async ({ params }) => {
-  const { id } = params;
+  const unwrappedParams = await params;
+  const { id } = unwrappedParams;
 
   // Fetch hotel details
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hotels/${id}`, { cache: 'no-store' });
@@ -20,21 +21,20 @@ const HotelDetailsPage = async ({ params }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {/* <img src={hotel.imageUrl} alt={hotel.name} className="w-full h-64 object-cover rounded-lg" /> */}
-       <Image 
-                src={hotel.imageUrl?.startsWith("http") ? hotel.imageUrl : "/images/default.jpg"} 
-                alt={hotel.name} 
-                width={300} 
-                height={200} 
-                className="rounded-md w-full object-cover" 
-              />
+      <Image 
+        src={hotel.imageUrl?.startsWith("http") ? hotel.imageUrl : "/images/default.jpg"} 
+        alt={hotel.name} 
+        width={300} 
+        height={200} 
+        className="rounded-md w-full object-cover" 
+      />
       <h1 className="text-3xl font-bold mt-4">{hotel.name}</h1>
       <p className="text-gray-600">{hotel.address}</p>
       <p className="text-sm text-gray-500">{hotel.availableRooms} rooms available</p>
       <p className="text-gray-700 mt-2">💲 {hotel.costPerNight} / night</p>
       <p className="text-yellow-500 mt-1">⭐ {hotel.rating}</p>
 
-      {/* //social media buttons */}
+      {/* Social Media Sharing */}
       <div className="mt-6 flex gap-4">
         <a href={facebookShare} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-2xl">
           <FaFacebook />
