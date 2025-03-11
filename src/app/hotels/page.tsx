@@ -14,7 +14,7 @@ const HotelsPage = async ({ searchParams }) => {
 
   try {
     // Fetch hotels from API
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hotels?limit=${limit}&offset=${offset}`, { cache: 'no-store' });
+    const response = await fetch(`https://react-next-crud.vercel.app/api/hotels?limit=${limit}&offset=${offset}`, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error('Failed to fetch hotels');
     }
