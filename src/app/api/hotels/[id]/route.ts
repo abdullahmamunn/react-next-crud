@@ -48,7 +48,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{id: s
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
 // Delete a hotel
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const {id} = await params; 
@@ -58,3 +57,4 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
   return NextResponse.json({ message: "Hotel deleted successfully" }, { status: 200 });
 }
+
