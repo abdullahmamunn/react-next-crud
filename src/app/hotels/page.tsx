@@ -16,6 +16,8 @@ try {
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL || "https://react-next-crud.vercel.app";
 
+    console.log(API_URL)
+
   console.log("Fetching hotels from:", `${API_URL}/api/hotels?limit=${limit}&offset=${offset}`);
 
   const response = await fetch(`${API_URL}/api/hotels?limit=${limit}&offset=${offset}`, {
