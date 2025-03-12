@@ -12,18 +12,29 @@ const HotelsPage = async ({ searchParams }) => {
   let hotels = [];
   let total = 0;
 
-  try {
-    // Fetch hotels from API
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hotels?limit=${limit}&offset=${offset}`, { cache: 'no-store' });
-    if (!response.ok) {
-      throw new Error('Failed to fetch hotels');
-    }
-    const data = await response.json();
-    hotels = data.hotels;
-    total = data.total;
-  } catch (error) {
-    console.error('Error fetching hotels:', error);
+try {
+  const API_URL =
+    process.env.NEXT_PUBLIC_API_URL || "https://react-next-crud.vercel.app";
+
+  console.log("Fetching hotels from:", `${API_URL}/api/hotels?limit=${limit}&offset=${offset}`);
+
+  const response = await fetch(`${API_URL}/api/hotels?limit=${limit}&offset=${offset}`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch hotels. Status: ${response.status}`);
   }
+
+  const data = await response.json();
+
+  hotels = Array.isArray(data.hotels) ? data.hotels : [];
+  total = typeof data.total === "number" ? data.total : 0;
+} catch (error) {
+  console.error("Error fetching hotels:", error.message);
+  hotels = [];
+  total = 0;
+}
 
   const totalPages = Math.ceil(total / limit);
 
